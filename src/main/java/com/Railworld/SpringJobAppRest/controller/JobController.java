@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 public class JobController {
     @Autowired
     private JobService jobService;
@@ -39,7 +39,20 @@ public class JobController {
     @DeleteMapping("/deleteJob/{id}")
     public String deleteJob(@PathVariable int id){
 		JobPost jobPost = jobService.getJob(id);
-        jobService.deleteJob(jobPost);
+        jobService.delete(jobPost.getPostId());
         return "Deleted";
     }
+    @GetMapping("/load")
+    public String load(){
+        jobService.load();
+        return "loaded";
+    }
+
+    @GetMapping("jobPosts/keyword/{keyword}")
+    public List<JobPost> searchByKeyword(@PathVariable("keyword") String keyword){
+         return jobService.search(keyword);
+    }
+
+
+
 }
